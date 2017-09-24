@@ -13,12 +13,46 @@ services:
     volumes:
       - queue:/var/lib/rabbitmq
 
+  app:
+    build: ./app
+    restart: always
+    depends_on:
+      - db
+      - queue
+    environment:
+      CELERY_BROKER_URL: amqp://party_hard:party_hard@queue:5672//
+      DATABASE_URL: psql://party_hard:party_hard@db:5432/party_hard
+    env_file: ./app/.env
+    volumes:
+      - app_public:/public
+      - app_run:/run
+    command: sh -c /app/run.sh
+
+  tasks:
+    build: ./tasks
+    restart: always
+    depends_on:
+      - db
+      - queue
+    environment:
+      CELERY_BROKER_URL: amqp://party_hard:party_hard@queue:5672//
+      DATABASE_URL: psql://party_hard:party_hard@db:5432/party_hard
+    env_file: ./app/.env
+    command: sh -c /app/run.sh
+
   nginx:
     build: ./nginx
     restart: always
+    depends_on:
+      - app
     ports:
       - 80:80
+    volumes:
+      - app_public:/var/www/html
+      - app_run:/var/run/app
 
 volumes:
+  app_public:
+  app_run:
   db:
   queue:
