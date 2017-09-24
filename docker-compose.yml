@@ -13,6 +13,12 @@ services:
     volumes:
       - queue:/var/lib/rabbitmq
 
+  nginx:
+    build: ./nginx
+    restart: always
+    ports:
+      - 80:80
+
 volumes:
   db:
   queue:
