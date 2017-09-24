@@ -1,2 +1,3 @@
-# party-hard-deploy
-Deploy scripts for Party Hard project https://github.com/memclutter/party-hard
+# Party Hard Deploy
+
+Deploy scripts for [Party Hard](https://github.com/memclutter/party-hard) project. 
