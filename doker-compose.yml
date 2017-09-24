@@ -7,5 +7,12 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
 
+  queue:
+    build: ./queue
+    restart: always
+    volumes:
+      - queue:/var/lib/rabbitmq
+
 volumes:
   db:
+  queue:
